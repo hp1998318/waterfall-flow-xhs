@@ -1,5 +1,5 @@
 <template>
-	<div id="water-flow-box" ref="containerRef" @scroll="scrollToBottom">
+	<div id="water-flow-box" ref="containerRef">
     <div ref="listRef" class="list-container">
       <WaterCard 
         v-for="(i,v) in state.cardInfos"
@@ -25,6 +25,10 @@
     gap: {
       type: Number,
       default: 10
+    },
+    page: {
+      type: Number,
+      default: 1
     }
   })
   const colorArr = ["#409eff", "#67c23a", "#e6a23c", "#f56c6c", "#909399"];
@@ -52,17 +56,10 @@
     x: [],
     y: []
   });
-  const getData = async () => {
-    list = await getDataList();
+  const getData = async (page: number, pageSize?: number) => {
+    list = await getDataList(page);
     state.cardInfos = [...state.cardInfos,...list];
     handleSize();
-  }
-  const scrollToBottom = () => {
-    const { scrollTop, clientHeight, scrollHeight } = containerRef.value!;
-    console.log('滚动了',scrollTop, clientHeight, scrollHeight)
-    if(scrollHeight - clientHeight - scrollTop <= 20) {
-      console.log('滑动到底了');
-    }
   }
   const minColumn = computed(() => {
     let minIndex = -1;
@@ -84,7 +81,7 @@
     const clientWidth = containerRef.value?.clientWidth!;
     state.cardWidth = (clientWidth - (props.gap * (props.column - 1))) / props.column;
     console.log('卡片宽度',state.cardWidth);
-    list.forEach((i,v) => {
+    state.cardInfos.forEach((i,v) => {
       // 计算图片高度
       const imgHeight = state.cardWidth * (i.height / i.width);
       state.imageHeight[v] = imgHeight;
@@ -115,10 +112,13 @@
   onUnmounted(() => {
     containerOberser.unobserve(containerRef.value!);
   })
-  getData();
+  getData(props.page);
   // watch(() => props.column, () => {
   //   handleSize();
   // },{immediate: true})
+  defineExpose({
+    getData
+  })
 </script>
 <style>
   #water-flow-box {

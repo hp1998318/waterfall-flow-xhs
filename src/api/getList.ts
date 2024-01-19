@@ -10,10 +10,10 @@ const list: cardDataType[] = data.data.items.map(item => ({
   liked_count: item.note_card.interact_info.liked_count
 }))
 
-export const getDataList = () => {
+export const getDataList = (page: number, pageSize = 20) => {
   return new Promise<cardDataType[]>((resolve) => {
     setTimeout(() => {
-      resolve(list);
+      resolve(list.slice((page - 1) * pageSize, page * pageSize));
     },2000);
   })
 }
