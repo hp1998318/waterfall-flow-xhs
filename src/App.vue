@@ -1,6 +1,6 @@
 <template>
-  <div id="main">
-    <div class="container" ref="fcontainerRef">
+  <div id="main" @scroll="scrolling">
+    <div class="container" ref="fcontainerRef" @scroll="scrolling">
       <WaterfallFlow :column="column" :gap="10"></WaterfallFlow>
     </div>
   </div>
@@ -25,6 +25,9 @@
       column.value = 2;
     }
   };
+  const scrolling = () => {
+    console.log('main滚动')
+  }
   onMounted(() => {
     fcontainerRef.value && containerOberser.observe(fcontainerRef.value);
   })
@@ -36,10 +39,13 @@
   #main {
     display: flex;
     justify-content: center;
-    width: 100vw;
+    overflow-y:scroll;
+    margin: 8px;
+    width: 100%;
     height: 100vh;
   }
   .container {
     width: 1400px;
+    height: 100%;
   }
 </style>

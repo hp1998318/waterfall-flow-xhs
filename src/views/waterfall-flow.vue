@@ -1,5 +1,5 @@
 <template>
-	<div id="water-flow-box" ref="containerRef">
+	<div id="water-flow-box" ref="containerRef" @scroll="scrollToBottom">
     <div ref="listRef" class="list-container">
       <WaterCard 
         v-for="(i,v) in state.cardInfos"
@@ -56,6 +56,13 @@
     list = await getDataList();
     state.cardInfos = [...state.cardInfos,...list];
     handleSize();
+  }
+  const scrollToBottom = () => {
+    const { scrollTop, clientHeight, scrollHeight } = containerRef.value!;
+    console.log('滚动了',scrollTop, clientHeight, scrollHeight)
+    if(scrollHeight - clientHeight - scrollTop <= 20) {
+      console.log('滑动到底了');
+    }
   }
   const minColumn = computed(() => {
     let minIndex = -1;
@@ -115,8 +122,13 @@
 </script>
 <style>
   #water-flow-box {
+    width: 100%;
+    height: 100%;
     .list-container {
+      width: 100%;
+      height: 100%;
       position: relative;
+      display: flex;
     }
   }
 </style>

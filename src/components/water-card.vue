@@ -69,8 +69,6 @@
       align-items: center;
       height: 20px;
       padding: 0px 12px 0px 12px;
-      /* padding-right: 12px;
-      padding-left: 12px; */
       .left {
         width: 80%;
         display: flex;
