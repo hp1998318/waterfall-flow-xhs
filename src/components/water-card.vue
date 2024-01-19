@@ -41,6 +41,7 @@
     position: absolute;
     display: flex;
     flex-direction: column;
+    transition: all 0.3s;
     .img {
       /* height: 300px; */
       border: 1px solid #eee;
