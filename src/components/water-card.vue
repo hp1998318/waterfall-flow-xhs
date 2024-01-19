@@ -69,9 +69,12 @@
       align-items: center;
       height: 20px;
       padding: 0px 12px 0px 12px;
+      /* padding-right: 12px;
+      padding-left: 12px; */
       .left {
+        width: 80%;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         img {
           width: 20px;
@@ -81,6 +84,9 @@
         }
         .user-name {
           margin-left: 8px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
           color: #333;
           line-height: 14px;
           font-weight: 500;

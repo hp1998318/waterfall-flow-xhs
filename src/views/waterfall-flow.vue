@@ -117,7 +117,6 @@
   #water-flow-box {
     .list-container {
       position: relative;
-      transition: all 0.5s;
     }
   }
 </style>
