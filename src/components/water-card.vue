@@ -43,6 +43,8 @@
     flex-direction: column;
     .img {
       /* height: 300px; */
+      border: 1px solid #eee;
+      border-radius: 20px;
     }
     .title {
       font-weight: 500;

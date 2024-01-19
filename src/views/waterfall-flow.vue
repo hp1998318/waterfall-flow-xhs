@@ -16,7 +16,7 @@
   import { getDataList } from '@/api/getList';
   import type { cardDataType } from '@/type/type';
   import WaterCard from '@/components/water-card.vue';
-  import { ref, reactive, watch, computed, onMounted , nextTick} from 'vue';
+  import { ref, reactive, watch, computed, onMounted, nextTick, onUnmounted} from 'vue';
   const props = defineProps({
     column: {
       type: Number,
@@ -30,6 +30,9 @@
   const colorArr = ["#409eff", "#67c23a", "#e6a23c", "#f56c6c", "#909399"];
   const containerRef = ref<HTMLDivElement | null>(null);
   const listRef = ref<HTMLDivElement | null>(null);
+  const containerOberser = new ResizeObserver((e) => {
+    handleSize();
+  })
   type stateType = {
     cardWidth: number,
     imageHeight: Array<number>,
@@ -54,7 +57,7 @@
     state.cardInfos = [...state.cardInfos,...list];
     handleSize();
   }
-  const minColumn = () => {
+  const minColumn = computed(() => {
     let minIndex = -1;
     let minHeight = Infinity;
     state.columnHeight.forEach((i,v) => {
@@ -68,7 +71,7 @@
       minHeight,
       minIndex
     }
-  }
+  })
   const handleSize = () => { 
     // 计算宽度
     const clientWidth = containerRef.value?.clientWidth!;
@@ -89,7 +92,7 @@
           state.columnHeight[v] = state.cardHeight[v] + props.gap;
           state.y[v] = 0;
         } else {
-          const { minHeight, minIndex } = minColumn();
+          const { minHeight, minIndex } = minColumn.value;
           const curX = minIndex * (state.cardWidth + props.gap);
           state.x[v] = curX;
           state.y[v] = minHeight;
@@ -99,10 +102,16 @@
     })
     console.log('size',state,props.column)
   }
-  getData();
-  watch(() => props.column, () => {
-    handleSize();
+  onMounted(() => {
+    containerRef.value && containerOberser.observe(containerRef.value);
+  });
+  onUnmounted(() => {
+    containerOberser.unobserve(containerRef.value!);
   })
+  getData();
+  // watch(() => props.column, () => {
+  //   handleSize();
+  // },{immediate: true})
 </script>
 <style>
   #water-flow-box {

@@ -6,13 +6,13 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { onMounted, reactive, ref } from 'vue';
+  import { onMounted, reactive, ref, onUnmounted } from 'vue';
   import WaterfallFlow from './views/waterfall-flow.vue';
   const fcontainerRef = ref<HTMLDivElement | null>(null);
   const column = ref(4);
   const containerOberser = new ResizeObserver((e) => {
     changeColumn(e[0].target.clientWidth);
-    console.log('container尺寸改变',column.value);
+    console.log('container尺寸改变',column.value,e[0].target.clientWidth);
   })
   const changeColumn = (width: number) => {
     if (width > 960) {
@@ -26,9 +26,11 @@
     }
   };
   onMounted(() => {
-    containerOberser.observe(fcontainerRef.value!);
+    fcontainerRef.value && containerOberser.observe(fcontainerRef.value);
   })
-
+  onUnmounted(() => {
+    containerOberser.unobserve(fcontainerRef.value!);
+  })
 </script>
 <style scoped>
   #main {
