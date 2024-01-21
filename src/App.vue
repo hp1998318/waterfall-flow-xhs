@@ -8,6 +8,7 @@
 <script setup lang="ts">
   import { onMounted, reactive, ref, onUnmounted, nextTick } from 'vue';
   import WaterfallFlow from './views/waterfall-flow.vue';
+  import { throttle } from '@/util/util';
   const fcontainerRef = ref<HTMLDivElement | null>(null);
   const waterfall = ref<any>(null);
   const column = ref(4);
@@ -27,14 +28,15 @@
       column.value = 2;
     }
   };
-  const scrollToBottom = () => {
+  const scrollToBottom = throttle(() => {
+    // console.log('滚动了');
     const { scrollTop, clientHeight, scrollHeight } = fcontainerRef.value!;
-    if(scrollHeight - clientHeight - scrollTop === 0) {
+    if(scrollHeight - clientHeight - scrollTop < 20) {
       page.value++;
       waterfall.value.getData(page.value);
-      console.log('滚动到底部',page.value);
+      // console.log('滚动到底部',page.value);
     }
-  }
+  })
   onMounted(() => {
     fcontainerRef.value && containerOberser.observe(fcontainerRef.value);
   })

@@ -14,6 +14,6 @@ export const getDataList = (page: number, pageSize = 20) => {
   return new Promise<cardDataType[]>((resolve) => {
     setTimeout(() => {
       resolve(list.slice((page - 1) * pageSize, page * pageSize));
-    },2000);
+    },1500);
   })
 }
