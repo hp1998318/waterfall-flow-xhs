@@ -36,7 +36,7 @@
       waterfall.value.getData(page.value);
       // console.log('滚动到底部',page.value);
     }
-  })
+  },1000)
   onMounted(() => {
     fcontainerRef.value && containerOberser.observe(fcontainerRef.value);
   })
